@@ -1,13 +1,13 @@
+import assert from 'node:assert/strict';
+
 /*
- * Shopping Cart Discount Calculator
- * Apply discounts to a shopping cart
- *
+ * Scenario: Apply discounts to a shopping cart
  * Rules:
- * If total > $500, apply 10% discount
- * Apply electronics discount 5% if item has category electronics and quantity >= 3
- *
- * Apply the highest of the two discounts
+ * If total > $500 -> 10% discount
+ * Electronics discount: 5% if quantity >= 3 (applies only to electronics)
+ * Only the highest discount applies
  */
+
 interface Item {
   name: string;
   category: string;
@@ -36,4 +36,9 @@ const applyDiscount = (cart: Item[]) => {
   };
 };
 
-export default applyDiscount;
+const cart = [
+  { name: 'Laptop', category: 'electronics', price: 500, quantity: 2 },
+  { name: 'Mouse', category: 'electronics', price: 50, quantity: 3 },
+];
+
+assert.deepEqual(applyDiscount(cart), { total_before_discount: 1150, discount: 115, total_after_discount: 1033 });
