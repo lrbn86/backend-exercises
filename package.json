@@ -1,0 +1,24 @@
+{
+  "name": "backend-exercises",
+  "version": "1.0.0",
+  "description": "Working on small backend exercises that focuses on business rules, data flows, and logic",
+  "main": "./dist/main.js",
+  "scripts": {
+    "start": "npm run build && node .",
+    "build": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lrbn86/backend-exercises.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/lrbn86/backend-exercises/issues"
+  },
+  "homepage": "https://github.com/lrbn86/backend-exercises#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
