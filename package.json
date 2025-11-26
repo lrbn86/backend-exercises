@@ -13,7 +13,19 @@
   },
   "homepage": "https://github.com/lrbn86/backend-exercises#readme",
   "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/express-rate-limit": "^5.1.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1"
   }
 }
