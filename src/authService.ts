@@ -64,12 +64,12 @@ app.post('/v1/login', async (req: Request, res: Response, next: NextFunction) =>
   }
 });
 
-app.get('/v1/ping/', authenticate, async (req: Request, res: Response, next: NextFunction) => {
-  const user = res.locals.user;
-  if (user.role === 'admin') {
-    return res.status(200).json({ message: 'Admin Ping!' });
-  }
+app.get('/v1/ping', authenticate, async (req: Request, res: Response, next: NextFunction) => {
   return res.status(200).json({ message: 'User Ping!' });
+});
+
+app.get('/v1/admin', authenticate, requireRole('admin'), async (req: Request, res: Response, next: NextFunction) => {
+  return res.status(200).json({ message: 'Admin Ping!' });
 });
 
 app.use((req: Request, res: Response) => {
@@ -96,4 +96,12 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
   } catch (err) {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
+}
+
+function requireRole(role: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user;
+    if (user.role !== role) return res.sendStatus(403);
+    next();
+  };
 }
