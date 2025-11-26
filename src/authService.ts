@@ -31,12 +31,13 @@ app.post('/v1/register', async (req: Request, res: Response, next: NextFunction)
   try {
     const email = req?.body?.email;
     const password = req?.body?.password;
+    const role = req?.body?.role;
     const passwordHash = await bcrypt.hash(password, 12);
     const user: User = {
       id: crypto.randomUUID(),
       email,
       password: passwordHash,
-      role: 'user',
+      role,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -63,6 +64,14 @@ app.post('/v1/login', async (req: Request, res: Response, next: NextFunction) =>
   }
 });
 
+app.get('/v1/ping/', authenticate, async (req: Request, res: Response, next: NextFunction) => {
+  const user = res.locals.user;
+  if (user.role === 'admin') {
+    return res.status(200).json({ message: 'Admin Ping!' });
+  }
+  return res.status(200).json({ message: 'User Ping!' });
+});
+
 app.use((req: Request, res: Response) => {
   return res.sendStatus(404);
 });
@@ -76,3 +85,15 @@ const port = 3000;
 app.listen(port, () => {
   console.log(`Auth service started on http://localhost:${port}`);
 });
+
+function authenticate(req: Request, res: Response, next: NextFunction) {
+  const token = req?.headers?.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Missing token' });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
+    res.locals.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
+}
